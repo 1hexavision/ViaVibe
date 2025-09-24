@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TravelVerse — Demo</title>
+  <style>
+    :root{
+      --bg:#f7fbff;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent1: linear-gradient(135deg,#6a11cb 0%,#2575fc 100%);
+      --accent2: linear-gradient(135deg,#ff7eb3 0%,#ff758c 100%);
+      --radius:14px;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(16,24,40,0.08);
+    }
+    *{
+        box-sizing:border-box
+    }
+
+    body{
+        font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+        margin:0;
+        background:var(--bg);
+        color:#0f172a;
+        -webkit-font-smoothing:antialiased;
+    }
+
+    a{
+        color:inherit;
+        text-decoration:none
+    }
+
+    img{
+        max-width:100%;
+        display:block;
+    }
+
+    /* Container */
+    .container{
+        max-width:1100px;
+        margin:0 auto;
+        padding:28px;
+    }
+
+    /* NAV */
+    header{
+        position:sticky;
+        top:0;
+        z-index:60;
+        background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+        backdrop-filter:blur(6px);
+        box-shadow:0 2px 8px rgba(12,18,36,0.04)
+    }
+    
+    .nav{
+        display:flex;
+        align-items:center;
+        gap:16px;
+        padding:14px 18px
+    }
+
+    .logo{
+        display:flex;
+        align-items:center;
+        gap:12px
+    }
+    
+    .logo .mark{
+        width:40px;
+        height:40px;
+        border-radius:10px;
+        background:var(--accent1);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:white;
+        font-weight:700;
+    }
+
+    nav{
+        margin-left:auto;
+        display:flex;
+        align-items:center;
+        gap:14px
+    }
+
+    .btn{
+        padding:8px 14px;
+        border-radius:12px;
+        cursor:pointer;
+        border:none;
+        background:linear-gradient(90deg,#ff9a9e,#fad0c4);
+        font-weight:600;
+    }
+    
+    .nav a{
+        padding:8px 10px;
+        border-radius:10px;
+        color:var(--muted);
+        font-weight:600;
+    }
+
+    .hamb{
+        display:none;
+    }
+
+    /* HERO */
+    .hero{
+        background:linear-gradient(180deg, rgba(75,0,130,0.08), rgba(37,117,252,0.06));
+        border-radius:18px;
+        padding:40px;
+        margin:18px 0;
+        position:relative;
+        overflow:hidden;
+    }
+    
+    .hero-grid{
+        display:grid;
+        grid-template-columns:1fr 420px;
+        gap:20px;
+        align-items:center;
+    }
+    
+    .eyebrow{
+        display:inline-block;
+        padding:6px 10px;
+        border-radius:999px;
+        background:#fff;
+        border:1px solid rgba(0,0,0,0.04);
+        font-weight:600;
+        color:#374151;
+    }
+    
+    h1{
+        font-size:34px;
+        margin:10px 0;
+        line-height:1.05;
+    }
+
+    h1 .accent{
+        background:linear-gradient(90deg,#ffd54d,#ff7eb3);
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+    }
+
+    p.lead{
+        color:var(--muted);
+        margin-bottom:18px;
+    }
+
+    .cta-row{
+        display:flex;
+        gap:12px;
+    }
+    
+    .primary{
+        background:var(--accent1);
+        color:white;
+        padding:12px 18px;
+        border-radius:12px;
+        font-weight:700;
+        box-shadow:0 6px 18px rgba(37,117,252,0.18)
+    }
+    
+    .secondary{
+        background:transparent;
+        border:1px solid rgba(15,23,42,0.06);
+        padding:12px 18px;
+        border-radius:12px;
+    }
+
+    /* Search Card */
+    .search-card{
+        background:var(--card);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--shadow);
+        margin-top:18px;
+    }
+    
+    .tabs{
+        display:flex;
+        gap:8px;
+        margin-bottom:12px;
+    }
+    
+    .secondary:hover {
+        box-shadow: inset 0 0 15px 5px rgba(255, 255, 255, 0.4);
+}
+
+    .tab{padding:8px 12px;border-radius:999px;border:1px solid rgba(15,23,42,0.06);cursor:pointer;font-weight:600}
+    .tab.active{background:var(--accent2);color:white;border:none}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .input{padding:12px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)}
+    .search-btn{grid-column:1/-1;padding:12px;border-radius:10px;background:linear-gradient(90deg,#ff6a88,#ff9a9e);color:white;font-weight:700;border:none}
+
+    /* Services */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.9), #fff);padding:16px;border-radius:12px;border:1px solid rgba(15,23,42,0.03);box-shadow:var(--shadow)}
+    .card h4{margin:8px 0}
+    .card p{color:var(--muted);font-size:14px}
+
+    /* Trending grid */
+    .trending{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+    .dest{position:relative;border-radius:14px;overflow:hidden;height:180px}
+    .dest .meta{position:absolute;left:12px;bottom:12px;color:white;font-weight:700;background:rgba(0,0,0,0.28);padding:8px 12px;border-radius:10px}
+
+    /* Experiences */
+    .exp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .exp-card{background:var(--card);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
+    .exp-card img{width:120px;height:80px;object-fit:cover;border-radius:10px}
+
+    /* Testimonials */
+    .testi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+    .test{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(15,23,42,0.03)}
+    .stars{color:#f59e0b}
+
+    /* Experts */
+    .experts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .expert{background:var(--card);padding:12px;border-radius:12px;text-align:center}
+    .expert img{width:72px;height:72px;border-radius:999px;object-fit:cover;margin:0 auto}
+
+    /* Transport options */
+    .trans{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+    .tcard{background:linear-gradient(90deg,rgba(255,255,255,0.9),#fff);padding:14px;border-radius:12px;text-align:center}
+
+    /* CTA Banner */
+    .cta-banner{margin:30px 0;border-radius:14px;padding:26px;color:white;background:linear-gradient(90deg,#6a11cb,#2575fc);display:flex;align-items:center;justify-content:space-between}
+
+    footer{margin-top:30px;padding:26px 0;color:var(--muted)}
+
+    /* reveal animations */
+    .reveal{opacity:0;transform:translateY(18px);transition:all .7s cubic-bezier(.2,.9,.2,1)}
+    .reveal.show{opacity:1;transform:none}
+
+    /* Responsive */
+    @media(max-width:1000px){
+      .hero-grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .trending{grid-template-columns:repeat(2,1fr)}
+      .testi{grid-template-columns:repeat(2,1fr)}
+      .experts{grid-template-columns:repeat(2,1fr)}
+      .trans{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:680px){
+      .nav a{display:none}
+      .hamb{display:block;margin-left:auto}
+      header .container{padding:10px}
+      .cards{grid-template-columns:1fr}
+      .trending{grid-template-columns:1fr}
+      .exp-grid{grid-template-columns:1fr}
+      .testi{grid-template-columns:1fr}
+      .experts{grid-template-columns:1fr}
+      .trans{grid-template-columns:1fr}
+      h1{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <div class="mark">VV</div>
+        <div>
+          <div style="font-weight:700">ViaVibe</div>
+          <div style="font-size:12px;color:var(--muted)">Plan. Explore. Remember.</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#services">Services</a>
+        <a href="#destinations">Destinations</a>
+        <a href="#experiences">Experiences</a>
+        <a href="#contact">Contact</a>
+        <button class="btn" style="background:linear-gradient(90deg,#6a11cb,#2575fc);color:white">Sign In</button>
+        <div class="hamb"><button class="btn" id="mobileToggle">☰</button></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Your Journey Awaits</div>
+          <h1 class="reveal">Your Journey Begins with <span class="accent">ViaVibe</span></h1>
+          <p class="lead reveal">Discover curated trips, trusted local experts, and seamless booking for flights, hotels and experiences — all in one place.</p>
+          <div class="cta-row reveal">
+            <button class="primary">Get Started</button>
+            <button class="secondary">Watch Video</button>
+          </div>
+
+          <div class="search-card reveal" style="margin-top:22px">
+            <div class="tabs">
+              <div class="tab active" data-tab="flights">Flights</div>
+              <div class="tab" data-tab="hotels">Hotels</div>
+              <div class="tab" data-tab="experiences">Experiences</div>
+            </div>
+            <div class="form-grid">
+              <input class="input" placeholder="From: e.g. New Delhi (DEL)" />
+              <input class="input" placeholder="To: e.g. Bali (DPS)" />
+              <input class="input" placeholder="Depart: Select date" />
+              <input class="input" placeholder="Return: Select date" />
+              <button class="search-btn">Search Flights</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="border-radius:12px;overflow:hidden;box-shadow:var(--shadow);height:360px;background-image:linear-gradient(180deg, rgba(255,255,255,0.32), rgba(255,255,255,0.18));display:flex;flex-direction:column">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=60&auto=format&fit=crop" style="height:220px;object-fit:cover;width:100%" alt="hero" />
+            <div style="padding:14px">
+              <h3 style="margin:0">Start your perfect getaway</h3>
+              <p style="color:var(--muted);margin-top:8px">Find top destinations, personalised recommendations and local guides.</p>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <div style="flex:1;background:linear-gradient(90deg,#34d399,#60a5fa);padding:10px;border-radius:10px;color:white;text-align:center;font-weight:700">Explore</div>
+                <div style="flex:1;background:linear-gradient(90deg,#f97316,#fb7185);padding:10px;border-radius:10px;color:white;text-align:center;font-weight:700">Book Now</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <h2 class="reveal">Complete Travel Solutions</h2>
+      <p class="reveal" style="color:var(--muted)">Everything you need for your perfect journey, across all travel needs.</p>
+      <div class="cards">
+        <div class="card reveal">
+          <div style="font-size:20px;font-weight:700">✈️ Flight Booking</div>
+          <p>Search, compare and book cheap flights with transparent pricing.</p>
+          <div style="margin-top:10px;color:#3b82f6;font-weight:700">Book Now →</div>
+        </div>
+        <div class="card reveal">
+          <div style="font-size:20px;font-weight:700">🏨 Hotel Stays</div>
+          <p>Handpicked hotels and stays with flexible cancellation.</p>
+          <div style="margin-top:10px;color:#10b981;font-weight:700">Explore Stays →</div>
+        </div>
+        <div class="card reveal">
+          <div style="font-size:20px;font-weight:700">🗺️ Local Attractions</div>
+          <p>Discover local attractions and tours recommended by experts.</p>
+          <div style="margin-top:10px;color:#ef4444;font-weight:700">See Tours →</div>
+        </div>
+        <div class="card reveal">
+          <div style="font-size:20px;font-weight:700">🚗 Local Transport</div>
+          <p>Car rentals, transfers and private drivers for comfortable travel.</p>
+          <div style="margin-top:10px;color:#8b5cf6;font-weight:700">Rent a Car →</div>
+        </div>
+        <div class="card reveal">
+          <div style="font-size:20px;font-weight:700">🎫 Expert Guides</div>
+          <p>Connect with certified local experts for unique experiences.</p>
+          <div style="margin-top:10px;color:#f97316;font-weight:700">Find Guides →</div>
+        </div>
+        <div class="card reveal">
+          <div style="font-size:20px;font-weight:700">🛡️ Travel Assistance</div>
+          <p>Travel insurance, visa help, and 24/7 support on your trip.</p>
+          <div style="margin-top:10px;color:#06b6d4;font-weight:700">Get Support →</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trending Destinations -->
+    <section id="destinations">
+      <h2 class="reveal">Trending Destinations</h2>
+      <p class="reveal" style="color:var(--muted)">Discover the world's most captivating places.</p>
+      <div class="trending">
+        <div class="dest reveal" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlVup0P42-jwEfvsW3u_RVIrOX3jq4xjOR33xgxhYasHfMnsZDLQM6PcY&s=10');background-size:cover;background-position:center">
+          <div class="meta">Santorini, Greece — From $1,299</div>
+        </div>
+        <div class="dest reveal" style="background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1000&q=60&auto=format&fit=crop');background-size:cover;background-position:center">
+          <div class="meta">Bali, Indonesia — From $699</div>
+        </div>
+        <div class="dest reveal" style="background-image:url('https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=1000&q=60&auto=format&fit=crop');background-size:cover;background-position:center">
+          <div class="meta">Iceland — From $1,899</div>
+        </div>
+        <div class="dest reveal" style="background-image:url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=1000&q=60&auto=format&fit=crop');background-size:cover;background-position:center">
+          <div class="meta">Kyoto, Japan — From $899</div>
+        </div>
+        <div class="dest reveal" style="background-image:url('https://afar.brightspotcdn.com/dims4/default/5896a05/2147483647/strip/false/crop/3000x2247+0+0/resize/1486x1113!/quality/90/?url=https%3A%2F%2Fk3-prod-afar-media.s3.us-west-2.amazonaws.com%2Fbrightspot%2Fb2%2Ff4%2F9a1ebe3f427f8e5eb937f8df8998%2Ftravelguides-maldives-videomediastudioeurope-shutterstock.jpg');background-size:cover;background-position:center">
+          <div class="meta">Maldives — From $2,499</div>
+        </div>
+        <div class="dest reveal" style="background-image:url('https://plus.unsplash.com/premium_photo-1661962302792-4b05d3e08513?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIwemVhbGFuZHxlbnwwfHwwfHx8MA%3D%3D');background-size:cover;background-position:center">
+          <div class="meta">New Zealand — From $1,199</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Curated Experiences -->
+    <section id="experiences">
+      <h2 class="reveal">Curated Experiences</h2>
+      <div class="exp-grid">
+        <div class="exp-card reveal">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_86s1Uc0NaXVGubYG1jKfAQyb8waAxuCg4dNqkYvNs8xWd_gOdoCl1gs&s=10" alt="" />
+          <div>
+            <h4>Italian Cooking Masterclass</h4>
+            <p style="color:var(--muted)">$129 per person — Learn from local chefs</p>
+          </div>
+        </div>
+        <div class="exp-card reveal">
+          <img src="https://s.yimg.com/ny/api/res/1.2/wAMQngrrPdxUQkc2qhbojA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyNDI7aD04Mjg7Y2Y9d2VicA--/https://media.zenfs.com/en/martha_stewart_living_393/a9e307b545b8c83c806f449fc1d76e8a" alt="" />
+          <div>
+            <h4>Aurora Photography Tour</h4>
+            <p style="color:var(--muted)">$299 — Capture the northern lights</p>
+          </div>
+        </div>
+        <div class="exp-card reveal">
+          <img src="https://evergreen.ie/cdn/shop/collections/green-tea-collection.jpg?v=1703168542&width=500" alt="" />
+          <div>
+            <h4>Traditional Tea Ceremony</h4>
+            <p style="color:var(--muted)">$59 — Cultural experiences with locals</p>
+          </div>
+        </div>
+        <div class="exp-card reveal">
+          <img src="https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=800&q=60&auto=format&fit=crop" alt="" />
+          <div>
+            <h4>African Safari Adventure</h4>
+            <p style="color:var(--muted)">$3,499 — Guided wildlife tours</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section>
+      <h2 class="reveal">What Our Travelers Say</h2>
+      <div class="testi">
+        <div class="test reveal">
+          <div style="display:flex;gap:12px;align-items:center"><img src="https://randomuser.me/api/portraits/women/65.jpg" style="width:56px;height:56px;border-radius:999px" alt="" /><div><strong>Riya</strong><div style="font-size:12px;color:var(--muted)">Traveler</div></div></div>
+          <div style="margin-top:10px" class="stars">★★★★★</div>
+          <p style="color:var(--muted);margin-top:10px">Amazing curated trip and local guide — everything went smoothly. Highly recommend TravelVerse for first time travelers.</p>
+        </div>
+        <div class="test reveal">
+          <div style="display:flex;gap:12px;align-items:center"><img src="https://randomuser.me/api/portraits/men/43.jpg" style="width:56px;height:56px;border-radius:999px" alt="" /><div><strong>Arjun</strong><div style="font-size:12px;color:var(--muted)">Photographer</div></div></div>
+          <div style="margin-top:10px" class="stars">★★★★★</div>
+          <p style="color:var(--muted);margin-top:10px">Great recommendations for photo spots and a very responsive team. Booked a private guide who was fantastic.</p>
+        </div>
+        <div class="test reveal">
+          <div style="display:flex;gap:12px;align-items:center"><img src="https://randomuser.me/api/portraits/women/12.jpg" style="width:56px;height:56px;border-radius:999px" alt="" /><div><strong>Simran</strong><div style="font-size:12px;color:var(--muted)">Explorer</div></div></div>
+          <div style="margin-top:10px" class="stars">★★★★★</div>
+          <p style="color:var(--muted);margin-top:10px">User friendly and excellent support. Loved the experiences section — unique and authentic.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experts -->
+    <section>
+      <h2 class="reveal">Connect with Local Experts</h2>
+      <div class="experts">
+        <div class="expert reveal"><img src="https://randomuser.me/api/portraits/men/11.jpg" alt="" /><h4>Manoj Patel</h4><p style="color:var(--muted);font-size:13px">Guide — India</p><a style="margin-top:8px;font-weight:700;color:#3b82f6">Enquiry</a></div>
+        <div class="expert reveal"><img src="https://randomuser.me/api/portraits/women/21.jpg" alt="" /><h4>Yuki Tanaka</h4><p style="color:var(--muted);font-size:13px">Guide — Japan</p><a style="margin-top:8px;font-weight:700;color:#10b981">Enquiry</a></div>
+        <div class="expert reveal"><img src="https://randomuser.me/api/portraits/men/31.jpg" alt="" /><h4>Carlos Mendez</h4><p style="color:var(--muted);font-size:13px">Guide — Spain</p><a style="margin-top:8px;font-weight:700;color:#ef4444">Enquiry</a></div>
+        <div class="expert reveal"><img src="https://randomuser.me/api/portraits/women/38.jpg" alt="" /><h4>Amira Selim</h4><p style="color:var(--muted);font-size:13px">Guide — Egypt</p><a style="margin-top:8px;font-weight:700;color:#8b5cf6">Enquiry</a></div>
+      </div>
+    </section>
+
+    <!-- Transport -->
+    <section>
+      <h2 class="reveal">Smart Transportation</h2>
+      <div class="trans">
+        <div class="tcard reveal">🚕 <h4>City Taxis</h4><p style="color:var(--muted)">Quick rides and airport transfers</p></div>
+        <div class="tcard reveal">🚐 <h4>Shuttle Services</h4><p style="color:var(--muted)">Shared shuttles for groups</p></div>
+        <div class="tcard reveal">🚲 <h4>Bike Rentals</h4><p style="color:var(--muted)">Explore at your pace</p></div>
+        <div class="tcard reveal">🛺 <h4>Private Drivers</h4><p style="color:var(--muted)">Hire a local driver</p></div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+      <div>
+        <h3 style="margin:0">Ready for Your Next Adventure?</h3>
+        <p style="margin:6px 0;color:rgba(255,255,255,0.9)">Get personalised plans and exclusive offers with TravelVerse.</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary">Sign Up</button>
+        <button class="secondary" style="background:transparent;border:1px solid rgba(255,255,255,0.18);color:white">Contact Sales</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:1">
+          <h3>ViaVibe</h3>
+          <p style="color:var(--muted);max-width:320px">Your go-to travel platform for curated trips, local experts and stress-free bookings.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:2">
+          <div>
+            <h4>Destinations</h4>
+            <ul style="list-style:none;padding:0;color:var(--muted)"><li>Europe</li><li>Asia</li><li>Americas</li></ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul style="list-style:none;padding:0;color:var(--muted)"><li>About</li><li>Careers</li><li>Blog</li></ul>
+          </div>
+          <div>
+            <h4>Support</h4>
+            <ul style="list-style:none;padding:0;color:var(--muted)"><li>Contact</li><li>Help Center</li><li>Privacy</li></ul>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(15,23,42,0.04);margin-top:18px;padding-top:12px;display:flex;align-items:center;justify-content:space-between">
+        <div style="color:var(--muted)">© 2025 TravelVerse. All rights reserved.</div>
+        <div style="display:flex;gap:10px;color:var(--muted)">Twitter • Facebook • Instagram</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Mobile menu toggle (basic)
+    document.getElementById('mobileToggle')?.addEventListener('click',function(){
+      alert('Mobile menu placeholder — wire up your menu here');
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.addEventListener('click',e=>{
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        tab.classList.add('active');
+        const label = tab.dataset.tab;
+        const btn = document.querySelector('.search-btn');
+        if(label==='hotels') btn.textContent='Search Hotels';
+        else if(label==='experiences') btn.textContent='Find Experiences';
+        else btn.textContent='Search Flights';
+      })
+    })
+
+    // Intersection Observer reveal
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+        }
+      })
+    },{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // simple floating parallax on mouse move for hero
+    const hero = document.querySelector('.hero');
+    if(hero){
+      hero.addEventListener('mousemove',e=>{
+        const rect = hero.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        hero.style.transform = `translate3d(${x*10}px,${y*6}px,0)`;
+        hero.style.transition = 'transform 0.08s linear';
+      });
+      hero.addEventListener('mouseleave',()=>{hero.style.transform='none'});
+    }
+
+    // small hover lift for cards
+    document.querySelectorAll('.card, .dest, .exp-card, .test, .expert, .tcard').forEach(c=>{
+      c.addEventListener('mouseenter',()=>c.style.transform='translateY(-6px)');
+      c.addEventListener('mouseleave',()=>c.style.transform='translateY(0)');
+      c.style.transition='transform 0.28s ease';
+    })
+  </script>
+</body>
+</html>
