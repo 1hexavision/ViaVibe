@@ -3,11 +3,11 @@ ViaVibe is a comprehensive travel platform that allows users to plan and book th
 
 This repository contains the front-end source code for ViaVibe, a modern and responsive travel booking platform. It includes a sleek login page and a feature-rich homepage, built with HTML, CSS, and vanilla JavaScript.
 
-##✨ Features
+## ✨ Features
 
-###General
+General
 
-####Responsive Design:#### The layout is fully responsive and optimized for both desktop and mobile devices.
+Responsive Design: The layout is fully responsive and optimized for both desktop and mobile devices.
 Modern UI/UX: Clean, user-friendly interface with smooth animations and transitions.
 No Frameworks: Built purely with HTML, CSS, and vanilla JavaScript, making it lightweight and easy to understand.
 Login Page (login-page.html)
