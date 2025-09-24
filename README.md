@@ -7,7 +7,7 @@ This repository contains the front-end source code for ViaVibe, a modern and res
 
 ### General
 
-Responsive Design: The layout is fully responsive and optimized for both desktop and mobile devices.
+**Responsive Design:** The layout is fully responsive and optimized for both desktop and mobile devices.
 Modern UI/UX: Clean, user-friendly interface with smooth animations and transitions.
 No Frameworks: Built purely with HTML, CSS, and vanilla JavaScript, making it lightweight and easy to understand.
 Login Page (login-page.html)
